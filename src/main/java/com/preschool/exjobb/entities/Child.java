@@ -17,36 +17,34 @@ public class Child {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PersonalInformation personalInformation;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private PreschoolGroup preschoolGroup;
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
-          //name = "child_caregiver",
           joinColumns = {@JoinColumn(referencedColumnName = "id")},
           inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")}
   )
   private List<Caregiver> caregivers;
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
-          //name = "child_caring_time",
           joinColumns = {@JoinColumn(referencedColumnName = "id")},
           inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")}
   )
   private List<CaringTime> caringTimes;
 
-  @ManyToMany
+  @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
-          //name = "child_relative",
           joinColumns = {@JoinColumn(referencedColumnName = "id")},
           inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")} 
   )
   private List<Relative> relatives;
+
 
 }

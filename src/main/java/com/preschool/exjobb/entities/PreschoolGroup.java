@@ -16,7 +16,7 @@ public class PreschoolGroup {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private GroupType groupType;
 

@@ -1,0 +1,253 @@
+openapi: 3.0.1
+info:
+  title: Preschool API
+  description: API specification
+  version: 1.0.0
+
+paths:
+  /child:
+    post:
+      summary: Saving new child
+      operationId: saveChild
+      tags:
+        - child
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChildResource'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+    get:
+      summary: Reading all children
+      operationId: getAllChildren
+      tags:
+        - child
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChildResource'
+
+  /child/{childId}:
+    get:
+      summary: Reading child
+      operationId: getChild
+      tags:
+        - child
+      parameters:
+        - in: path
+          name: childId
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChildResource'
+
+  /children/{groupId}:
+    get:
+      summary: Reading children in group
+      operationId: getChildrenInGroup
+      tags:
+        - child
+      parameters:
+        - in: path
+          name: groupId
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChildResource'
+
+components:
+  schemas:
+
+    ZipCodeResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        number:
+          type: string
+
+    CityResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        name:
+          type: string
+
+
+    PersonalInformationResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        personalNumber:
+          type: string
+        address:
+          type: string
+        zipCode:
+          $ref: '#/components/schemas/ZipCodeResource'
+        city:
+          $ref: '#/components/schemas/CityResource'
+
+    ContactInformationResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        phoneNumber:
+          type: string
+        email:
+          type: string
+
+    GroupTypeResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        name:
+          type: string
+
+    PreschoolGroupResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        groupType:
+          $ref: '#/components/schemas/GroupTypeResource'
+        name:
+          type: string
+        places:
+          type: integer
+
+    CaregiverResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        personalInformation:
+          $ref: '#/components/schemas/PersonalInformationResource'
+        contactInformation:
+          $ref: '#/components/schemas/ContactInformationResource'
+        security:
+          $ref: '#/components/schemas/SecurityResource'
+
+    ChildResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        personalInformation:
+          $ref: '#/components/schemas/PersonalInformationResource'
+        preschoolGroup:
+          $ref: '#/components/schemas/PreschoolGroupResource'
+        caregivers:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaregiverResource'
+        caringTimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaringTimeResource'
+        relatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/RelativeResource'
+
+    RelativeResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        contactInformation:
+          $ref: '#/components/schemas/ContactInformationResource'
+        firstName:
+          type: string
+        lastName:
+          type: string
+        relationToChild:
+          type: string
+
+    Educator:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        personalInformation:
+          $ref: '#/components/schemas/PersonalInformationResource'
+        contactInformation:
+          $ref: '#/components/schemas/ContactInformationResource'
+        security:
+          $ref: '#/components/schemas/SecurityResource'
+        preschoolGroup:
+          $ref: '#/components/schemas/PreschoolGroupResource'
+        isAdmin:
+          type: boolean
+
+    CaringTimeResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        weekday:
+          type: string
+        startHour:
+          type: integer
+        startMinut:
+          type: integer
+        endHour:
+          type: integer
+        endMinut:
+          type: integer
+
+    SecurityResource:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        userName:
+          type: string
+        password:
+          type: string
+
+    Attendance:
+      properties:
+#        id:
+#          type: integer
+#          format: int64
+        child:
+          $ref: '#/components/schemas/ChildResource'
+        date:
+          type: string
+          format: date-time
+        isPresent:
+          type: boolean

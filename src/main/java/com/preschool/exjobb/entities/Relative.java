@@ -16,9 +16,10 @@ public class Relative {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private ContactInformation contactInformation;
+
   @Column
   private String firstName;
 

@@ -1,15 +1,15 @@
 package com.preschool.exjobb.entities;
 
+import com.preschool.exjobb.enums.WeekdayConstant;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Weekday {
 
@@ -17,18 +17,12 @@ public class Weekday {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  private WeekdayConstant name;
+  @Column
+  @Enumerated(EnumType.STRING)
+  private WeekdayConstant weekday;
 
-  private Weekday(WeekdayConstant name) {
-    this.name = name;
-  }
 
-  public enum WeekdayConstant {
-    MONDAY,
-    TUESDAY,
-    WEDNESDAY,
-    THURSDAY,
-    FRIDAY
-  }
+
+
 
 }

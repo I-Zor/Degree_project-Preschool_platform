@@ -32,7 +32,7 @@ public class PersonalInformation {
   @JoinColumn(referencedColumnName = "id")
   private ZipCode zipCode;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private City city;
 
