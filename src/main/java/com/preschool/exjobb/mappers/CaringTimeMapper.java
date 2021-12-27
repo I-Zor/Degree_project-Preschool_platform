@@ -15,4 +15,7 @@ public abstract class CaringTimeMapper {
 
   @Mapping(target = "weekday", expression = "java(converter.toWeekday(resource.getWeekday()))")
   public abstract CaringTime toCaringTime(CaringTimeResource resource);
+
+  @Mapping(target = "weekday", expression = "java(entity.getWeekday().getWeekday().name())")
+  public abstract CaringTimeResource toCaringTimeResources(CaringTime entity);
 }

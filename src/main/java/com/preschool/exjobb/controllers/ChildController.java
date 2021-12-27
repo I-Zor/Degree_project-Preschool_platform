@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 public class ChildController implements ChildApi {
@@ -17,5 +19,16 @@ public class ChildController implements ChildApi {
   public ResponseEntity<Long> saveChild(ChildResource childResource) {
     Long id = service.saveChild(childResource);
     return ResponseEntity.ok(id);
+  }
+
+  @Override
+  public ResponseEntity<ChildResource> getChild(String childId) {
+    ChildResource child = service.findChildById(childId);
+    return ResponseEntity.ok(child);
+  }
+
+  @Override
+  public ResponseEntity<List<ChildResource>> getAllChildren() {
+    return ChildApi.super.getAllChildren();
   }
 }

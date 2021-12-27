@@ -18,4 +18,8 @@ public class CaringTimeMappingHelper {
   public List<CaringTime> mapCaringTimeList(List<CaringTimeResource> resources){
     return resources.stream().map(caringTimeMapper::toCaringTime).collect(Collectors.toList());
   }
+
+  public List<CaringTimeResource> mapCaringTimeResources(List<CaringTime> entities){
+    return entities.stream().map(caringTimeMapper::toCaringTimeResources).collect(Collectors.toList());
+  }
 }
