@@ -1,6 +1,7 @@
 package com.preschool.exjobb.controllers;
 
 import com.preschool.exjobb.api.ChildApi;
+import com.preschool.exjobb.models.CaringTimeResource;
 import com.preschool.exjobb.models.ChildResource;
 import com.preschool.exjobb.services.ChildService;
 import lombok.AllArgsConstructor;
@@ -22,13 +23,26 @@ public class ChildController implements ChildApi {
   }
 
   @Override
-  public ResponseEntity<ChildResource> getChild(String childId) {
+  public ResponseEntity<ChildResource> getChild(Long childId) {
     ChildResource child = service.findChildById(childId);
     return ResponseEntity.ok(child);
   }
 
   @Override
+  public ResponseEntity<List<ChildResource>> getChildrenInGroup(Long groupId) {
+    List<ChildResource> allChildrenInGroup = service.findAllChildrenInGroup(groupId);
+    return ResponseEntity.ok(allChildrenInGroup);
+  }
+
+  @Override
   public ResponseEntity<List<ChildResource>> getAllChildren() {
-    return ChildApi.super.getAllChildren();
+    List<ChildResource> allChildren = service.findAllChildren();
+    return ResponseEntity.ok(allChildren);
+  }
+
+  @Override
+  public ResponseEntity<Long> upsertCaringTime(Long childId, CaringTimeResource caringTimeResource) {
+    Long updatedChild = service.upsertCaringTime(childId, caringTimeResource);
+    return ResponseEntity.ok(updatedChild);
   }
 }

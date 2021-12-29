@@ -102,7 +102,7 @@
                         <generateModelTests>false</generateModelTests>
                         <generateSupportingFiles>true</generateSupportingFiles>
                         <configOptions>
-<!--                            <dateLibrary>java8-localdate</dateLibrary>-->
+                            <dateLibrary>java8</dateLibrary>
                             <interfaceOnly>true</interfaceOnly>
                             <delegatePattern>true</delegatePattern>
                         </configOptions>
