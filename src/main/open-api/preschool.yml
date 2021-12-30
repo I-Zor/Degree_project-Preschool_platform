@@ -111,6 +111,84 @@ paths:
                 type: integer
                 format: int64
 
+  /educator:
+    post:
+      summary: Saving new educator
+      operationId: saveEducator
+      tags:
+        - educator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EducatorResource'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+    get:
+      summary: Reading all educators
+      operationId: getAllEducators
+      tags:
+        - educator
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EducatorResource'
+
+  /educator/{educatorId}:
+    get:
+      summary: Reading educator
+      operationId: getEducator
+      tags:
+        - educator
+      parameters:
+        - in: path
+          name: educatorId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EducatorResource'
+
+  /educator/group/{groupId}:
+    get:
+      summary: Get all educators in group
+      operationId: getEducatorsInGroup
+      tags:
+        - educator
+      parameters:
+        - in: path
+          name: groupId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EducatorResource'
+
 components:
   schemas:
 
