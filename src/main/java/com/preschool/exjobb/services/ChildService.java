@@ -122,6 +122,12 @@ public class ChildService {
     caregivers.forEach(caregiver -> {
       checkPersonalInfoAndSave(caregiver.getPersonalInformation());
     });
+
+    preschoolGroupRepository.findByName(child.getPreschoolGroup().getName()).ifPresentOrElse(
+            child::setPreschoolGroup, () -> {
+              preschoolGroupRepository.save(child.getPreschoolGroup());
+            }
+    );
     return child;
   }
 
@@ -138,5 +144,6 @@ public class ChildService {
               zipCodeRepository.save(personalInformation.getZipCode());
             }
     );
+
   }
 }
