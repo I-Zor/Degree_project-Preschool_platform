@@ -27,4 +27,7 @@ public class Attendance {
   @Column
   private LocalDate date;
 
+  @Column
+  private String reasonToAbsence;
+
 }

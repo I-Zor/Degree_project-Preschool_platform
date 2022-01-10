@@ -189,7 +189,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/EducatorResource'
 
-  /attendance/absence/{childId}/{date}:
+  /attendance/absence/{childId}/{date}/{reason}:
     get:
       summary: Saving absence
       operationId: saveAbsence
@@ -204,6 +204,11 @@ paths:
           required: true
         - in: path
           name: date
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: reason
           schema:
             type: string
           required: true
@@ -261,6 +266,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AttendanceResource'
+
 
 components:
   schemas:
@@ -440,3 +446,5 @@ components:
           format: date
         isPresent:
           type: boolean
+        reasonToAbsence:
+          type: string

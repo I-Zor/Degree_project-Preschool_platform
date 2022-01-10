@@ -28,8 +28,8 @@ public class AttendanceController implements AttendanceApi {
   }
 
   @Override
-  public ResponseEntity<Long> saveAbsence(Long childId, String date) {
-    Long absent = service.saveAbsence(childId, date);
+  public ResponseEntity<Long> saveAbsence(Long childId, String date, String reason) {
+    Long absent = service.saveAbsence(childId, date, reason);
     return ResponseEntity.ok(absent);
   }
 }
