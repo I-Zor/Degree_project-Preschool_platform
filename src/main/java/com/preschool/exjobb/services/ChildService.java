@@ -36,9 +36,7 @@ public class ChildService {
 
     validateEnums(childResource);
     Child child = childMapper.toChild(childResource);
-    Child checkedChild = checkInfoAndSave(child);
-    Child saved = childRepository.save(checkedChild);
-    return saved.getId();
+    return checkInfoAndSave(child);
   }
 
   public ChildResource findChildById(long id) {
@@ -114,7 +112,7 @@ public class ChildService {
     return true;
   }
 
-  private Child checkInfoAndSave(Child child) {
+  public Long checkInfoAndSave(Child child) {
 
     checkPersonalInfoAndSave(child.getPersonalInformation());
 
@@ -128,7 +126,8 @@ public class ChildService {
               preschoolGroupRepository.save(child.getPreschoolGroup());
             }
     );
-    return child;
+    Child saved = childRepository.save(child);
+    return saved.getId();
   }
 
   private void checkPersonalInfoAndSave(PersonalInformation personalInformation) {
@@ -146,4 +145,5 @@ public class ChildService {
     );
 
   }
+
 }
