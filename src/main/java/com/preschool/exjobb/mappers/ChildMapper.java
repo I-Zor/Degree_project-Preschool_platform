@@ -20,9 +20,13 @@ public abstract class ChildMapper {
 
   @Mappings({
           @Mapping(target = "caringTimes", expression = "java(helper.mapCaringTimeList(resource.getCaringTimes()))"),
-          @Mapping(target = "preschoolGroup.groupType", expression = "java(converter.toGroupType(preschoolGroupResource.getGroupType().getName()))")
+          @Mapping(target = "preschoolGroup.groupType", expression = "java(converter.toGroupType(preschoolGroupResource.getGroupType().getGroupType()))")
   })
   public abstract Child toChild(ChildResource resource);
 
-  //public abstract ChildResource toResource (Child entity);
+  @Mappings({
+          @Mapping(target = "caringTimes", expression = "java(helper.mapCaringTimeResources(entity.getCaringTimes()))"),
+          @Mapping(target = "preschoolGroup.groupType", expression = "java(converter.toGroupTypeResource(preschoolGroup.getGroupType().getGroupConstant().name()))")
+  })
+  public abstract ChildResource toResource (Child entity);
 }

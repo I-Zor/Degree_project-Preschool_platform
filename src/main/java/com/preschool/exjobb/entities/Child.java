@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,21 +31,21 @@ public class Child {
           joinColumns = {@JoinColumn(referencedColumnName = "id")},
           inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")}
   )
-  private List<Caregiver> caregivers;
+  private List<Caregiver> caregivers = new ArrayList<>();
 
   @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
           joinColumns = {@JoinColumn(referencedColumnName = "id")},
           inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")}
   )
-  private List<CaringTime> caringTimes;
+  private List<CaringTime> caringTimes = new ArrayList<>();
 
   @ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(
           joinColumns = {@JoinColumn(referencedColumnName = "id")},
           inverseJoinColumns = {@JoinColumn(referencedColumnName = "id")} 
   )
-  private List<Relative> relatives;
+  private List<Relative> relatives = new ArrayList<>();
 
 
 }
