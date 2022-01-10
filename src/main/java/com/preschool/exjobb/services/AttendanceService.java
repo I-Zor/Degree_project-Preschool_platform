@@ -26,7 +26,7 @@ public class AttendanceService {
   public final AttendanceRepository attendanceRepository;
   public final PreschoolGroupRepository preschoolGroupRepository;
 
-  public Long saveAbsence(long childId, String inputDate) {
+  public Long saveAbsence(long childId, String inputDate, String reasonToAbsence) {
     Child child = childRepository.findById(childId).get();
     DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
     formatter = formatter.withLocale(new Locale("sv", "SE"));
@@ -34,6 +34,7 @@ public class AttendanceService {
     Attendance foundByChildAndDate = attendanceRepository.findByChildAndDate(child, date);
     if (foundByChildAndDate.isPresent()){
       foundByChildAndDate.setPresent(false);
+      foundByChildAndDate.setReasonToAbsence(reasonToAbsence);
       attendanceRepository.save(foundByChildAndDate);
       return foundByChildAndDate.getId();
     }
@@ -42,6 +43,7 @@ public class AttendanceService {
       newAttendance.setChild(child);
       newAttendance.setDate(date);
       newAttendance.setPresent(false);
+      newAttendance.setReasonToAbsence(reasonToAbsence);
       Attendance saved = attendanceRepository.save(newAttendance);
       return saved.getId();
     }
