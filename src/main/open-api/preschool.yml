@@ -189,6 +189,79 @@ paths:
                 items:
                   $ref: '#/components/schemas/EducatorResource'
 
+  /attendance/absence/{childId}/{date}:
+    get:
+      summary: Saving absence
+      operationId: saveAbsence
+      tags:
+        - attendance
+      parameters:
+        - in: path
+          name: childId
+          schema:
+            type: integer
+            format: int64
+          required: true
+        - in: path
+          name: date
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+
+  /attendance/absence/{groupId}:
+    get:
+      summary: Reading all absences in group
+      operationId: getAbsences
+      tags:
+        - attendance
+      parameters:
+        - in: path
+          name: groupId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttendanceResource'
+
+  /attendance/present/{groupId}:
+    get:
+      summary: Reading all present in group
+      operationId: getPresent
+      tags:
+        - attendance
+      parameters:
+        - in: path
+          name: groupId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttendanceResource'
+
 components:
   schemas:
 

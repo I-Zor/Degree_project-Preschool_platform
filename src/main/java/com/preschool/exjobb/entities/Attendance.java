@@ -17,7 +17,7 @@ public class Attendance {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne(cascade = CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(referencedColumnName = "id")
   private Child child;
 

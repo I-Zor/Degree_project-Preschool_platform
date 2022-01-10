@@ -1,15 +1,22 @@
 package com.preschool.exjobb;
 
+import com.preschool.exjobb.entities.Attendance;
+import com.preschool.exjobb.entities.Child;
 import com.preschool.exjobb.entities.GroupType;
 import com.preschool.exjobb.entities.Weekday;
 import com.preschool.exjobb.enums.GroupConstant;
 import com.preschool.exjobb.enums.WeekdayConstant;
+import com.preschool.exjobb.repositories.AttendanceRepository;
+import com.preschool.exjobb.repositories.ChildRepository;
 import com.preschool.exjobb.repositories.GroupTypeRepository;
 import com.preschool.exjobb.repositories.WeekdayRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootApplication
 public class ExjobbApplication {
@@ -19,7 +26,10 @@ public class ExjobbApplication {
   }
 
   @Bean
-  public CommandLineRunner bootstrap(GroupTypeRepository groupTypeRepository, WeekdayRepository weekdayRepository){
+  public CommandLineRunner bootstrap(GroupTypeRepository groupTypeRepository,
+                                     WeekdayRepository weekdayRepository,
+                                     AttendanceRepository attendanceRepository,
+                                     ChildRepository childRepository){
     return (args -> {
 
       Weekday monday = new Weekday();
@@ -77,6 +87,18 @@ public class ExjobbApplication {
       if (foundMix == null){
         groupTypeRepository.save(mix);
       }
+
+      List<Child> allChildren = childRepository.findAll();
+      allChildren.forEach(child -> {
+        Attendance today = attendanceRepository.findByChildAndDate(child, LocalDate.now());
+        if (today == null){
+          Attendance attendance = new Attendance();
+          attendance.setChild(child);
+          attendance.setDate(LocalDate.now());
+          attendance.setPresent(true);
+          attendanceRepository.save(attendance);
+        }
+      });
     });
   }
 }
