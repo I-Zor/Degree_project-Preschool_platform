@@ -23,6 +23,12 @@ public class ChildController implements ChildApi {
   }
 
   @Override
+  public ResponseEntity<List<ChildResource>> getAllChildren() {
+    List<ChildResource> allChildren = service.findAllChildren();
+    return ResponseEntity.ok(allChildren);
+  }
+
+  /*@Override
   public ResponseEntity<ChildResource> getChild(Long childId) {
     ChildResource child = service.findChildById(childId);
     return ResponseEntity.ok(child);
@@ -44,5 +50,5 @@ public class ChildController implements ChildApi {
   public ResponseEntity<Long> upsertCaringTime(Long childId, CaringTimeResource caringTimeResource) {
     Long updatedChild = service.upsertCaringTime(childId, caringTimeResource);
     return ResponseEntity.ok(updatedChild);
-  }
+  }*/
 }
