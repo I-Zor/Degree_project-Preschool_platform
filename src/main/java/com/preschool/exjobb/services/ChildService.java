@@ -10,7 +10,9 @@ import com.preschool.exjobb.models.ChildResource;
 import com.preschool.exjobb.repositories.*;
 import com.preschool.exjobb.util.Converter;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,18 +84,17 @@ public class ChildService {
     caringTimeRepository.save(foundCaringTime);
   }
 
-
   private void validateEnums(ChildResource resource) {
 
     if (!checkWeekday(resource) || !checkGroup(resource)) {
-      throw new IllegalArgumentException();
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
   }
 
   private boolean checkGroup(ChildResource resource) {
     if (!findEnumValue(Stream.of(GroupConstant.values())
             .map(GroupConstant::name), resource.getPreschoolGroup().getGroupType().getGroupType())) {
-      throw new IllegalArgumentException();
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     } else {
       return true;
     }
@@ -106,7 +107,7 @@ public class ChildService {
     days.forEach(constant -> {
       if (!findEnumValue(Stream.of(WeekdayConstant.values())
               .map(WeekdayConstant::name), constant)) {
-        throw new IllegalArgumentException();
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
       }
     });
     return true;
@@ -143,7 +144,5 @@ public class ChildService {
               zipCodeRepository.save(personalInformation.getZipCode());
             }
     );
-
   }
-
 }

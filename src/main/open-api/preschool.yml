@@ -353,6 +353,32 @@ paths:
                 type: integer
                 format: int64
 
+  /login/{userName}/{password}:
+    get:
+      summary: Log in
+      operationId: logIn
+      tags:
+        - login
+      parameters:
+        - in: path
+          name: userName
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: password
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+
 components:
   schemas:
 
@@ -440,6 +466,8 @@ components:
           $ref: '#/components/schemas/ContactInformationResource'
         security:
           $ref: '#/components/schemas/SecurityResource'
+        role:
+          type: string
 
     ChildResource:
       properties:
@@ -492,6 +520,8 @@ components:
           $ref: '#/components/schemas/PreschoolGroupResource'
         isAdmin:
           type: boolean
+        role:
+          type: string
 
     CaringTimeResource:
       properties:

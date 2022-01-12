@@ -11,7 +11,9 @@ import com.preschool.exjobb.repositories.EducatorRepository;
 import com.preschool.exjobb.repositories.PreschoolGroupRepository;
 import com.preschool.exjobb.repositories.ZipCodeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,14 +84,14 @@ public class EducatorService {
 
   private void validateEnum(EducatorResource resource) {
     if (!checkGroup(resource)) {
-      throw new IllegalArgumentException();
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
   }
 
   private boolean checkGroup(EducatorResource resource) {
     if (!findEnumValue(Stream.of(GroupConstant.values())
             .map(GroupConstant::name), resource.getPreschoolGroup().getGroupType().getGroupType())) {
-      throw new IllegalArgumentException();
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     } else {
       return true;
     }

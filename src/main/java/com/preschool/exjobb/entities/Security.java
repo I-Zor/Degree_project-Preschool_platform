@@ -16,7 +16,7 @@ public class Security {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column
+  @Column(unique = true)
   private String userName;
 
   @Column

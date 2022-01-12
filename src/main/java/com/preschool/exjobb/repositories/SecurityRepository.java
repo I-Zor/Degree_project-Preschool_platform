@@ -1,6 +1,5 @@
 package com.preschool.exjobb.repositories;
 
-import com.preschool.exjobb.entities.Caregiver;
 import com.preschool.exjobb.entities.Security;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CaregiverRepository extends JpaRepository<Caregiver, Long> {
+public interface SecurityRepository extends JpaRepository<Security, Long> {
 
-  Optional<Caregiver> findBySecurity(Security security);
+  Optional<Security> findByUserNameAndPassword(String userName, String password);
 }

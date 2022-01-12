@@ -1,5 +1,6 @@
 package com.preschool.exjobb.entities;
 
+import com.preschool.exjobb.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,7 @@ public class Caregiver {
   @JoinColumn(referencedColumnName = "id")
   private Security security;
 
+  @Column
+  @Enumerated(EnumType.STRING)
+  private Role role = Role.caregiver;
 }
