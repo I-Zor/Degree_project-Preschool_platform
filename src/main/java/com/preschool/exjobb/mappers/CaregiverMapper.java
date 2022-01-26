@@ -5,6 +5,8 @@ import com.preschool.exjobb.models.CaregiverResource;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface CaregiverMapper {
 
@@ -12,4 +14,6 @@ public interface CaregiverMapper {
 
   @Mapping(target = "role", expression = "java(com.preschool.exjobb.enums.Role.valueOf(resource.getRole()))")
   Caregiver toCaregiver(CaregiverResource resource);
+
+  List<CaregiverResource> toResourceList(List<Caregiver> entities);
 }

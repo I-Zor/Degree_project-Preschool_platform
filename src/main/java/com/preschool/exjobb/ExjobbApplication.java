@@ -33,57 +33,57 @@ public class ExjobbApplication {
     return (args -> {
 
       Weekday monday = new Weekday();
-      monday.setWeekday(WeekdayConstant.monday);
-      Weekday foundMonday = weekdayRepository.findByWeekday(WeekdayConstant.monday);
+      monday.setWeekday(WeekdayConstant.Måndag);
+      Weekday foundMonday = weekdayRepository.findByWeekday(WeekdayConstant.Måndag);
       if (foundMonday == null){
         weekdayRepository.save(monday);
       }
       Weekday tuesday = new Weekday();
-      tuesday.setWeekday(WeekdayConstant.tuesday);
-      Weekday foundTuesday = weekdayRepository.findByWeekday(WeekdayConstant.tuesday);
+      tuesday.setWeekday(WeekdayConstant.Tisdag);
+      Weekday foundTuesday = weekdayRepository.findByWeekday(WeekdayConstant.Tisdag);
       if (foundTuesday == null){
         weekdayRepository.save(tuesday);
       }
       Weekday wednesday = new Weekday();
-      wednesday.setWeekday(WeekdayConstant.wednesday);
-      Weekday foundWednesday = weekdayRepository.findByWeekday(WeekdayConstant.wednesday);
+      wednesday.setWeekday(WeekdayConstant.Onsdag);
+      Weekday foundWednesday = weekdayRepository.findByWeekday(WeekdayConstant.Onsdag);
       if (foundWednesday == null){
         weekdayRepository.save(wednesday);
       }
       Weekday thursday = new Weekday();
-      thursday.setWeekday(WeekdayConstant.thursday);
-      Weekday foundThursday = weekdayRepository.findByWeekday(WeekdayConstant.thursday);
+      thursday.setWeekday(WeekdayConstant.Torsdag);
+      Weekday foundThursday = weekdayRepository.findByWeekday(WeekdayConstant.Torsdag);
       if (foundThursday == null){
         weekdayRepository.save(thursday);
       }
       Weekday friday = new Weekday();
-      friday.setWeekday(WeekdayConstant.friday);
-      Weekday foundFriday = weekdayRepository.findByWeekday(WeekdayConstant.friday);
+      friday.setWeekday(WeekdayConstant.Fredag);
+      Weekday foundFriday = weekdayRepository.findByWeekday(WeekdayConstant.Fredag);
       if (foundFriday == null){
         weekdayRepository.save(friday);
       }
 
       GroupType toddler = new GroupType();
-      toddler.setGroupConstant(GroupConstant.toddler);
-      GroupType foundToddler = groupTypeRepository.findByGroupConstant(GroupConstant.toddler);
+      toddler.setGroupConstant(GroupConstant.Småbarn);
+      GroupType foundToddler = groupTypeRepository.findByGroupConstant(GroupConstant.Småbarn);
       if (foundToddler == null){
         groupTypeRepository.save(toddler);
       }
       GroupType middleAge = new GroupType();
-      middleAge.setGroupConstant(GroupConstant.middle_age);
-      GroupType foundMiddleAge = groupTypeRepository.findByGroupConstant(GroupConstant.middle_age);
+      middleAge.setGroupConstant(GroupConstant.Medelåldern);
+      GroupType foundMiddleAge = groupTypeRepository.findByGroupConstant(GroupConstant.Medelåldern);
       if (foundMiddleAge == null){
         groupTypeRepository.save(middleAge);
       }
       GroupType preschoolAge = new GroupType();
-      preschoolAge.setGroupConstant(GroupConstant.preschool_age);
-      GroupType foundPreschool = groupTypeRepository.findByGroupConstant(GroupConstant.preschool_age);
+      preschoolAge.setGroupConstant(GroupConstant.Förskoleåldern);
+      GroupType foundPreschool = groupTypeRepository.findByGroupConstant(GroupConstant.Förskoleåldern);
       if (foundPreschool == null){
         groupTypeRepository.save(preschoolAge);
       }
       GroupType mix = new GroupType();
-      mix.setGroupConstant(GroupConstant.mix_age);
-      GroupType foundMix = groupTypeRepository.findByGroupConstant(GroupConstant.mix_age);
+      mix.setGroupConstant(GroupConstant.Blandad);
+      GroupType foundMix = groupTypeRepository.findByGroupConstant(GroupConstant.Blandad);
       if (foundMix == null){
         groupTypeRepository.save(mix);
       }

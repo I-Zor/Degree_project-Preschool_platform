@@ -224,6 +224,22 @@ paths:
                   $ref: '#/components/schemas/AttendanceResource'
 
   #CaregiverAPI
+  /caregiver:
+    get:
+      summary: Reading all caregivers
+      operationId: getAllCaregivers
+      tags:
+        - caregiver
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CaregiverResource'
+
   /caregiver/{caregiverId}:
     get:
       summary: Reading caregiver
@@ -353,6 +369,7 @@ paths:
                 type: integer
                 format: int64
 
+  # Login API
   /login/{userName}/{password}:
     get:
       summary: Log in

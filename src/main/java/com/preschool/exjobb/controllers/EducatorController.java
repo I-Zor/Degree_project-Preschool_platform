@@ -9,12 +9,14 @@ import com.preschool.exjobb.services.ChildService;
 import com.preschool.exjobb.services.EducatorService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @AllArgsConstructor
 @RestController
+@CrossOrigin
 public class EducatorController implements EducatorApi {
 
   private final EducatorService educatorService;

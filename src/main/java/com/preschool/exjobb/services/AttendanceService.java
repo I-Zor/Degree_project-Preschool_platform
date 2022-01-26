@@ -32,7 +32,7 @@ public class AttendanceService {
     formatter = formatter.withLocale(new Locale("sv", "SE"));
     LocalDate date = LocalDate.parse(inputDate, formatter);
     Attendance foundByChildAndDate = attendanceRepository.findByChildAndDate(child, date);
-    if (foundByChildAndDate.isPresent()){
+    if (foundByChildAndDate != null){
       foundByChildAndDate.setPresent(false);
       foundByChildAndDate.setReasonToAbsence(reasonToAbsence);
       attendanceRepository.save(foundByChildAndDate);

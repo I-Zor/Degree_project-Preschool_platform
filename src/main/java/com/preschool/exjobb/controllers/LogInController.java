@@ -4,10 +4,12 @@ import com.preschool.exjobb.api.LoginApi;
 import com.preschool.exjobb.services.LoginService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin
 public class LogInController implements LoginApi {
 
   private final LoginService service;

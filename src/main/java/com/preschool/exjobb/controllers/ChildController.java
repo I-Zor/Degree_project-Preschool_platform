@@ -6,12 +6,14 @@ import com.preschool.exjobb.models.ChildResource;
 import com.preschool.exjobb.services.ChildService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @AllArgsConstructor
 @RestController
+@CrossOrigin
 public class ChildController implements ChildApi {
 
   private final ChildService service;
