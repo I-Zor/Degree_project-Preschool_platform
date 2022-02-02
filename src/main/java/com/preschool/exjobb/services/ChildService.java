@@ -33,12 +33,26 @@ public class ChildService {
   private final CaringTimeRepository caringTimeRepository;
   private final Converter converter;
   private final CaringTimeMapper caringTimeMapper;
+  private final CaregiverRepository caregiverRepository;
 
   public Long saveChild(ChildResource childResource) {
 
     validateEnums(childResource);
     Child child = childMapper.toChild(childResource);
     return checkInfoAndSave(child);
+  }
+
+  public Long saveChildToCaregiver(long caregiversId, long childId){
+    Child child = childRepository.findById(childId).get();
+    Caregiver caregiver = findCaregiver(caregiversId);
+    child.addCaregiver(caregiver);
+    Child saved = childRepository.save(child);
+    return saved.getId();
+  }
+
+  private Caregiver findCaregiver(long caregiversId) {
+    Optional<Caregiver> foundCaregiver = caregiverRepository.findById(caregiversId);
+    return foundCaregiver.orElse(null);
   }
 
   public ChildResource findChildById(long id) {
@@ -55,6 +69,11 @@ public class ChildService {
   public List<ChildResource> findAllChildren() {
     List<Child> allChildren = childRepository.findAll();
     return allChildren.stream().map(childMapper::toResource).collect(Collectors.toList());
+  }
+
+  public List<ChildResource> findAllChildrenByCaregiver(long caregiverId) {
+    List<Child> byCaregiver = childRepository.findByCaregiver(caregiverId);
+    return byCaregiver.stream().map(childMapper::toResource).collect(Collectors.toList());
   }
 
   public Long upsertCaringTime(long childId, CaringTimeResource newCaringTime) {
@@ -118,9 +137,11 @@ public class ChildService {
     checkPersonalInfoAndSave(child.getPersonalInformation());
 
     List<Caregiver> caregivers = child.getCaregivers();
-    caregivers.forEach(caregiver -> {
-      checkPersonalInfoAndSave(caregiver.getPersonalInformation());
-    });
+    if(caregivers != null){
+      caregivers.forEach(caregiver -> {
+        checkPersonalInfoAndSave(caregiver.getPersonalInformation());
+      });
+    }
 
     preschoolGroupRepository.findByName(child.getPreschoolGroup().getName()).ifPresentOrElse(
             child::setPreschoolGroup, () -> {
@@ -131,7 +152,7 @@ public class ChildService {
     return saved.getId();
   }
 
-  private void checkPersonalInfoAndSave(PersonalInformation personalInformation) {
+  public void checkPersonalInfoAndSave(PersonalInformation personalInformation) {
 
     cityRepository.findByName(personalInformation.getCity().getName()).ifPresentOrElse(
             personalInformation::setCity, () -> {

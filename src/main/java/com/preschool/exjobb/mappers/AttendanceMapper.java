@@ -4,13 +4,20 @@ import com.preschool.exjobb.entities.Attendance;
 import com.preschool.exjobb.models.AttendanceResource;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring", uses = {ChildMapper.class})
 public interface AttendanceMapper {
 
-  @Mapping(source = "child", target = "child")
+  @Mappings({
+          @Mapping(source = "child", target = "child"),
+          @Mapping(source = "present", target = "isPresent")
+  })
   AttendanceResource toResource (Attendance entity);
 
-  @Mapping(source = "child", target = "child")
+  @Mappings({
+          @Mapping(source = "child", target = "child"),
+          @Mapping(source = "isPresent", target = "present")
+  })
   Attendance toAttendance (AttendanceResource resource);
 }

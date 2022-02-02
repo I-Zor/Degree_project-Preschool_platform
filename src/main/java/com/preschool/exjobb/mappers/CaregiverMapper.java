@@ -12,7 +12,6 @@ public interface CaregiverMapper {
 
   CaregiverResource toResource(Caregiver entity);
 
-  @Mapping(target = "role", expression = "java(com.preschool.exjobb.enums.Role.valueOf(resource.getRole()))")
   Caregiver toCaregiver(CaregiverResource resource);
 
   List<CaregiverResource> toResourceList(List<Caregiver> entities);

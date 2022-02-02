@@ -30,27 +30,15 @@ public class ChildController implements ChildApi {
     return ResponseEntity.ok(allChildren);
   }
 
-  /*@Override
-  public ResponseEntity<ChildResource> getChild(Long childId) {
-    ChildResource child = service.findChildById(childId);
-    return ResponseEntity.ok(child);
+  @Override
+  public ResponseEntity<List<ChildResource>> getAllChildrenByCaregiver(Long caregiverId) {
+    List<ChildResource> childResources = service.findAllChildrenByCaregiver(caregiverId);
+    return ResponseEntity.ok(childResources);
   }
 
   @Override
-  public ResponseEntity<List<ChildResource>> getChildrenInGroup(Long groupId) {
-    List<ChildResource> allChildrenInGroup = service.findAllChildrenInGroup(groupId);
-    return ResponseEntity.ok(allChildrenInGroup);
+  public ResponseEntity<Long> saveChildByCaregiver(Long caregiverId, Long childId) {
+    Long saved = service.saveChildToCaregiver(caregiverId, childId);
+    return ResponseEntity.ok(saved);
   }
-
-  @Override
-  public ResponseEntity<List<ChildResource>> getAllChildren() {
-    List<ChildResource> allChildren = service.findAllChildren();
-    return ResponseEntity.ok(allChildren);
-  }
-
-  @Override
-  public ResponseEntity<Long> upsertCaringTime(Long childId, CaringTimeResource caringTimeResource) {
-    Long updatedChild = service.upsertCaringTime(childId, caringTimeResource);
-    return ResponseEntity.ok(updatedChild);
-  }*/
 }

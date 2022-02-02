@@ -22,16 +22,14 @@ public class CaringTime {
   private Weekday weekday;
 
   @Column
-  private int startHour;
+  private String startHour;
 
   @Column
-  private int startMinut;
+  private String startMinut;
 
   @Column
-  private int endHour;
+  private String endHour;
 
   @Column
-  private int endMinut;
-
-
+  private String endMinut;
 }

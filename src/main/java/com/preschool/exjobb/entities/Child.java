@@ -47,5 +47,9 @@ public class Child {
   )
   private List<Relative> relatives = new ArrayList<>();
 
+  public void addCaregiver(Caregiver caregiver){
+    this.getCaregivers().add(caregiver);
+  }
+
 
 }

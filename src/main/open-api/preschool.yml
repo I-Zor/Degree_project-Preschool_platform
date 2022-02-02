@@ -40,7 +40,58 @@ paths:
                 items:
                   $ref: '#/components/schemas/ChildResource'
 
-#EducatorAPI
+  /child/{caregiverId}:
+    get:
+      summary: Reading all children by caregiver
+      operationId: getAllChildrenByCaregiver
+      tags:
+        - child
+      parameters:
+        - in: path
+          name: caregiverId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChildResource'
+
+  /child/caregiver/{caregiverId}/{childId}:
+    post:
+      summary: Saving new child
+      operationId: saveChildByCaregiver
+      tags:
+        - child
+      parameters:
+        - in: path
+          name: caregiverId
+          schema:
+            type: integer
+            format: int64
+          required: true
+        - in: path
+          name: childId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+
+  #EducatorAPI
   /educator:
     post:
       summary: Saving new educator
@@ -483,8 +534,6 @@ components:
           $ref: '#/components/schemas/ContactInformationResource'
         security:
           $ref: '#/components/schemas/SecurityResource'
-        role:
-          type: string
 
     ChildResource:
       properties:
@@ -537,8 +586,6 @@ components:
           $ref: '#/components/schemas/PreschoolGroupResource'
         isAdmin:
           type: boolean
-        role:
-          type: string
 
     CaringTimeResource:
       properties:
@@ -548,13 +595,13 @@ components:
         weekday:
           type: string
         startHour:
-          type: integer
+          type: string
         startMinut:
-          type: integer
+          type: string
         endHour:
-          type: integer
+          type: string
         endMinut:
-          type: integer
+          type: string
 
     SecurityResource:
       properties:
