@@ -31,6 +31,11 @@ public class EducatorService {
   private final EducatorRepository educatorRepository;
   private final PreschoolGroupRepository preschoolGroupRepository;
 
+  /**
+   * Saving Educator
+   * @param resource - EducatorResource
+   * @return - Educator id
+   */
   public Long saveEducator(EducatorResource resource) {
     validateEnum(resource);
     Educator educator = educatorMapper.toEntity(resource);
@@ -39,6 +44,10 @@ public class EducatorService {
     return saved.getId();
   }
 
+  /**
+   * Finding all educators in preschool
+   * @return - list of EducatorResources
+   */
   public List<EducatorResource> findAllEducators(){
     List<Educator> allEducators = educatorRepository.findAll();
     return allEducators.stream()
@@ -46,11 +55,21 @@ public class EducatorService {
             .collect(Collectors.toList());
   }
 
+  /**
+   * Finding Educator by id
+   * @param id - Educator id, long
+   * @return - EducatorResource
+   */
   public EducatorResource findEducatorById(long id) {
     Educator educator = educatorRepository.findById(id).orElse(null);
     return educatorMapper.toResource(educator);
   }
 
+  /**
+   * Finding all educators in the preschool group
+   * @param groupId - Preschool group id, long
+   * @return - List of EducatorResources
+   */
   public List<EducatorResource> findAllEducatorsInGroup(long groupId){
     PreschoolGroup preschoolGroup = preschoolGroupRepository.findById(groupId).orElse(null);
     List<Educator> educatorsInGroup = educatorRepository.findAllByPreschoolGroup(preschoolGroup);
@@ -59,6 +78,12 @@ public class EducatorService {
             .collect(Collectors.toList());
   }
 
+  /**
+   * Checking if city, zip code and preschool group already exists in database. If so then it is added to Educator, otherwise
+   * a new are saved.
+   * @param educator - Educator
+   * @return - Educator
+   */
   private Educator checkInfoAndSave(Educator educator) {
     PersonalInformation personalInformation = educator.getPersonalInformation();
     cityRepository.findByName(personalInformation.getCity().getName()).ifPresentOrElse(
@@ -82,6 +107,10 @@ public class EducatorService {
   }
 
 
+  /**
+   * Validating group type in EducatorResource
+   * @param resource - EducatorResource
+   */
   private void validateEnum(EducatorResource resource) {
     if (!checkGroup(resource)) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

@@ -20,9 +20,4 @@ public class Weekday {
   @Column
   @Enumerated(EnumType.STRING)
   private WeekdayConstant weekday;
-
-
-
-
-
 }

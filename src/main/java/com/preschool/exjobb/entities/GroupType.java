@@ -20,5 +20,4 @@ public class GroupType {
   @Column
   @Enumerated(EnumType.STRING)
   private GroupConstant groupConstant;
-
 }

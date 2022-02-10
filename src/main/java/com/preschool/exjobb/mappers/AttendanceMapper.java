@@ -14,10 +14,4 @@ public interface AttendanceMapper {
           @Mapping(source = "present", target = "isPresent")
   })
   AttendanceResource toResource (Attendance entity);
-
-  @Mappings({
-          @Mapping(source = "child", target = "child"),
-          @Mapping(source = "isPresent", target = "present")
-  })
-  Attendance toAttendance (AttendanceResource resource);
 }

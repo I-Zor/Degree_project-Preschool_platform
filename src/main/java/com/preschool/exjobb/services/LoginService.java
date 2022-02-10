@@ -21,6 +21,12 @@ public class LoginService {
   private final CaregiverRepository caregiverRepository;
   private final SecurityRepository securityRepository;
 
+  /**
+   * Checking if username and password exist in database
+   * @param userName - username, String
+   * @param password - password, String
+   * @return - user's id (Educator's or Caregiver's)
+   */
   public Long checkCredentials(String userName, String password){
 
     Optional<Security> found = securityRepository.findByUserNameAndPassword(userName, password);
@@ -32,6 +38,11 @@ public class LoginService {
     }
   }
 
+  /**
+   * Finding user by Security
+   * @param security - Security
+   * @return - user's id
+   */
   private Long findUser(Security security) {
     Optional<Educator> foundEducator = educatorRepository.findBySecurity(security);
     Optional<Caregiver> foundCaregiver = caregiverRepository.findBySecurity(security);

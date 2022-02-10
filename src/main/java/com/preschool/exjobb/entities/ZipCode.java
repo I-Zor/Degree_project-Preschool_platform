@@ -18,5 +18,4 @@ public class ZipCode {
 
   @Column
   private String number;
-
 }

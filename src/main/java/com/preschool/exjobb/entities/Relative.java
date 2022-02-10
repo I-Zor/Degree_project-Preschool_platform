@@ -28,5 +28,4 @@ public class Relative {
 
   @Column
   private String relationToChild;
-
 }

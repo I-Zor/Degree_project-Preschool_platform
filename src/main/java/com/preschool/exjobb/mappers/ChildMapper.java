@@ -2,8 +2,8 @@ package com.preschool.exjobb.mappers;
 
 import com.preschool.exjobb.entities.Child;
 import com.preschool.exjobb.models.ChildResource;
-import com.preschool.exjobb.util.Converter;
 import com.preschool.exjobb.util.CaringTimeMappingHelper;
+import com.preschool.exjobb.util.Converter;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

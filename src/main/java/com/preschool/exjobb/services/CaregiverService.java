@@ -16,15 +16,24 @@ public class CaregiverService {
   private final CaregiverRepository caregiverRepository;
   private final CaregiverMapper caregiverMapper;
 
-  public CaregiverResource getCaregiver(long id){
+  /**
+   * Finding Caregiver by id
+   *
+   * @param id - Caregiver id, long
+   * @return - CaregiverResource
+   */
+  public CaregiverResource getCaregiver(long id) {
     Caregiver caregiver = caregiverRepository.findById(id).get();
     return caregiverMapper.toResource(caregiver);
   }
 
-  public List<CaregiverResource> getAllCaregivers(){
+  /**
+   * Getting all Caregivers in preschool
+   *
+   * @return - list of CaregiverResources
+   */
+  public List<CaregiverResource> getAllCaregivers() {
     List<Caregiver> allCaregivers = caregiverRepository.findAll();
     return caregiverMapper.toResourceList(allCaregivers);
   }
-
-
 }

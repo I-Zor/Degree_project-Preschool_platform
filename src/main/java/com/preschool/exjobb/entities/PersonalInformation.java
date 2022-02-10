@@ -35,5 +35,4 @@ public class PersonalInformation {
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(referencedColumnName = "id")
   private City city;
-
 }

@@ -10,7 +10,4 @@ public interface GroupTypeMapper {
 
   @Mapping(target = "groupType", expression = "java(entity.getGroupConstant().name())")
   GroupTypeResource toGroupTypeResource(GroupType entity);
-
-  @Mapping(target = "groupConstant", expression = "java(com.preschool.exjobb.enums.GroupConstant.valueOf(resource.getGroupType()))")
-  GroupType toGroupTypeEntity(GroupTypeResource resource);
 }

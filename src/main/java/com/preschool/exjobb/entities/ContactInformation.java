@@ -21,5 +21,4 @@ public class ContactInformation {
 
   @Column
   private String email;
-
 }

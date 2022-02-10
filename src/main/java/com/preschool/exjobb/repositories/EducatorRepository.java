@@ -13,5 +13,6 @@ import java.util.Optional;
 public interface EducatorRepository extends JpaRepository<Educator, Long> {
 
   List<Educator> findAllByPreschoolGroup(PreschoolGroup group);
+
   Optional<Educator> findBySecurity(Security security);
 }

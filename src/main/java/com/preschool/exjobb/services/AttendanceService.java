@@ -26,19 +26,27 @@ public class AttendanceService {
   public final AttendanceRepository attendanceRepository;
   public final PreschoolGroupRepository preschoolGroupRepository;
 
+
+  /**
+   * Saving absence to child by setting attribute isPresent to false
+   *
+   * @param childId         - Child id, long
+   * @param inputDate       - chosen date, String
+   * @param reasonToAbsence - reason to absence, String
+   * @return - Attendance id, long
+   */
   public Long saveAbsence(long childId, String inputDate, String reasonToAbsence) {
     Child child = childRepository.findById(childId).get();
     DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
     formatter = formatter.withLocale(new Locale("sv", "SE"));
     LocalDate date = LocalDate.parse(inputDate, formatter);
     Attendance foundByChildAndDate = attendanceRepository.findByChildAndDate(child, date);
-    if (foundByChildAndDate != null){
+    if (foundByChildAndDate != null) {
       foundByChildAndDate.setPresent(false);
       foundByChildAndDate.setReasonToAbsence(reasonToAbsence);
       attendanceRepository.save(foundByChildAndDate);
       return foundByChildAndDate.getId();
-    }
-    else {
+    } else {
       Attendance newAttendance = new Attendance();
       newAttendance.setChild(child);
       newAttendance.setDate(date);
@@ -49,7 +57,13 @@ public class AttendanceService {
     }
   }
 
-  public List<AttendanceResource> findAllAbsenceTodayInGroup(long groupId){
+  /**
+   * Finding all Attendance today in certain preschool group which have attribute isPresent set to false
+   *
+   * @param groupId - Preschool group id, long
+   * @return - list of AttendanceResources
+   */
+  public List<AttendanceResource> findAllAbsenceTodayInGroup(long groupId) {
     PreschoolGroup preschoolGroup = preschoolGroupRepository.findById(groupId).get();
     List<Attendance> allAttendancesToday = attendanceRepository.findAllByDate(LocalDate.now());
 
@@ -58,16 +72,16 @@ public class AttendanceService {
             .collect(Collectors.toList());
 
     return allAbsencesTodayInGroup.stream().map(attendanceMapper::toResource).collect(Collectors.toList());
-    }
+  }
 
-    public List<AttendanceResource> findAllPresentTodayInGroup(long groupId){
-      PreschoolGroup preschoolGroup = preschoolGroupRepository.findById(groupId).get();
-      List<Attendance> allAttendancesToday = attendanceRepository.findAllByDate(LocalDate.now());
+  public List<AttendanceResource> findAllPresentTodayInGroup(long groupId) {
+    PreschoolGroup preschoolGroup = preschoolGroupRepository.findById(groupId).get();
+    List<Attendance> allAttendancesToday = attendanceRepository.findAllByDate(LocalDate.now());
 
-      List<Attendance> allPresentTodayInGroup = allAttendancesToday.stream()
-              .filter(attendance -> attendance.getChild().getPreschoolGroup().equals(preschoolGroup) && attendance.isPresent())
-              .collect(Collectors.toList());
+    List<Attendance> allPresentTodayInGroup = allAttendancesToday.stream()
+            .filter(attendance -> attendance.getChild().getPreschoolGroup().equals(preschoolGroup) && attendance.isPresent())
+            .collect(Collectors.toList());
 
-      return allPresentTodayInGroup.stream().map(attendanceMapper::toResource).collect(Collectors.toList());
-    }
+    return allPresentTodayInGroup.stream().map(attendanceMapper::toResource).collect(Collectors.toList());
+  }
 }

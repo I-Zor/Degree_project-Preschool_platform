@@ -21,5 +21,4 @@ public class Security {
 
   @Column
   private String password;
-
 }
