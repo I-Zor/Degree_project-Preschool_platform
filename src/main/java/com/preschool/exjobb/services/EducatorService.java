@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,8 +62,11 @@ public class EducatorService {
    * @return - EducatorResource
    */
   public EducatorResource findEducatorById(long id) {
-    Educator educator = educatorRepository.findById(id).orElse(null);
-    return educatorMapper.toResource(educator);
+    Optional<Educator> educator = educatorRepository.findById(id);
+    if (educator.isEmpty()){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No educator found");
+    }
+    return educatorMapper.toResource(educator.get());
   }
 
   /**
@@ -71,8 +75,11 @@ public class EducatorService {
    * @return - List of EducatorResources
    */
   public List<EducatorResource> findAllEducatorsInGroup(long groupId){
-    PreschoolGroup preschoolGroup = preschoolGroupRepository.findById(groupId).orElse(null);
-    List<Educator> educatorsInGroup = educatorRepository.findAllByPreschoolGroup(preschoolGroup);
+    Optional<PreschoolGroup> preschoolGroup = preschoolGroupRepository.findById(groupId);
+    if (preschoolGroup.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No preschool group found");
+    }
+    List<Educator> educatorsInGroup = educatorRepository.findAllByPreschoolGroup(preschoolGroup.get());
     return educatorsInGroup.stream()
             .map(educatorMapper::toResource)
             .collect(Collectors.toList());

@@ -9,12 +9,15 @@ import com.preschool.exjobb.repositories.AttendanceRepository;
 import com.preschool.exjobb.repositories.ChildRepository;
 import com.preschool.exjobb.repositories.PreschoolGroupRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,11 +39,12 @@ public class AttendanceService {
    * @return - Attendance id, long
    */
   public Long saveAbsence(long childId, String inputDate, String reasonToAbsence) {
-    Child child = childRepository.findById(childId).get();
-    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
-    formatter = formatter.withLocale(new Locale("sv", "SE"));
-    LocalDate date = LocalDate.parse(inputDate, formatter);
-    Attendance foundByChildAndDate = attendanceRepository.findByChildAndDate(child, date);
+    LocalDate date = formatDate(inputDate);
+    Optional<Child> child = childRepository.findById(childId);
+    if (child.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No child found");
+    }
+    Attendance foundByChildAndDate = attendanceRepository.findByChildAndDate(child.get(), date);
     if (foundByChildAndDate != null) {
       foundByChildAndDate.setPresent(false);
       foundByChildAndDate.setReasonToAbsence(reasonToAbsence);
@@ -48,13 +52,19 @@ public class AttendanceService {
       return foundByChildAndDate.getId();
     } else {
       Attendance newAttendance = new Attendance();
-      newAttendance.setChild(child);
+      newAttendance.setChild(child.get());
       newAttendance.setDate(date);
       newAttendance.setPresent(false);
       newAttendance.setReasonToAbsence(reasonToAbsence);
       Attendance saved = attendanceRepository.save(newAttendance);
       return saved.getId();
     }
+  }
+
+  private LocalDate formatDate(String inputDate) {
+    DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+    formatter = formatter.withLocale(new Locale("sv", "SE"));
+    return LocalDate.parse(inputDate, formatter);
   }
 
   /**
@@ -64,24 +74,39 @@ public class AttendanceService {
    * @return - list of AttendanceResources
    */
   public List<AttendanceResource> findAllAbsenceTodayInGroup(long groupId) {
-    PreschoolGroup preschoolGroup = preschoolGroupRepository.findById(groupId).get();
+    PreschoolGroup preschoolGroup = findPreschoolGroup(groupId);
     List<Attendance> allAttendancesToday = attendanceRepository.findAllByDate(LocalDate.now());
 
     List<Attendance> allAbsencesTodayInGroup = allAttendancesToday.stream()
-            .filter(attendance -> attendance.getChild().getPreschoolGroup().equals(preschoolGroup) && !attendance.isPresent())
+            .filter(attendance -> attendance.getChild()
+                    .getPreschoolGroup()
+                    .equals(preschoolGroup) && !attendance.isPresent())
             .collect(Collectors.toList());
 
-    return allAbsencesTodayInGroup.stream().map(attendanceMapper::toResource).collect(Collectors.toList());
+    return allAbsencesTodayInGroup.stream()
+            .map(attendanceMapper::toResource)
+            .collect(Collectors.toList());
   }
 
   public List<AttendanceResource> findAllPresentTodayInGroup(long groupId) {
-    PreschoolGroup preschoolGroup = preschoolGroupRepository.findById(groupId).get();
+    PreschoolGroup preschoolGroup = findPreschoolGroup(groupId);
     List<Attendance> allAttendancesToday = attendanceRepository.findAllByDate(LocalDate.now());
 
     List<Attendance> allPresentTodayInGroup = allAttendancesToday.stream()
-            .filter(attendance -> attendance.getChild().getPreschoolGroup().equals(preschoolGroup) && attendance.isPresent())
+            .filter(attendance -> attendance.getChild()
+                    .getPreschoolGroup()
+                    .equals(preschoolGroup) && attendance.isPresent())
             .collect(Collectors.toList());
 
     return allPresentTodayInGroup.stream().map(attendanceMapper::toResource).collect(Collectors.toList());
+  }
+
+  private PreschoolGroup findPreschoolGroup(long groupId) {
+    Optional<PreschoolGroup> preschoolGroup = preschoolGroupRepository.findById(groupId);
+    if (preschoolGroup.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No group found");
+    } else {
+      return preschoolGroup.get();
+    }
   }
 }

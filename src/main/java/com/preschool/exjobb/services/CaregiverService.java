@@ -5,9 +5,12 @@ import com.preschool.exjobb.mappers.CaregiverMapper;
 import com.preschool.exjobb.models.CaregiverResource;
 import com.preschool.exjobb.repositories.CaregiverRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -23,8 +26,12 @@ public class CaregiverService {
    * @return - CaregiverResource
    */
   public CaregiverResource getCaregiver(long id) {
-    Caregiver caregiver = caregiverRepository.findById(id).get();
-    return caregiverMapper.toResource(caregiver);
+    Optional<Caregiver> caregiver = caregiverRepository.findById(id);
+    if (caregiver.isEmpty()){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No caregiver found");
+    } else {
+      return caregiverMapper.toResource(caregiver.get());
+    }
   }
 
   /**

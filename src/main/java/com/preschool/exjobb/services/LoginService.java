@@ -34,7 +34,7 @@ public class LoginService {
       return findUser(found.get());
     }
     else {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No user found");
     }
   }
 
@@ -53,7 +53,7 @@ public class LoginService {
       return foundCaregiver.get().getId();
     }
     else {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No security found");
     }
   }
 }

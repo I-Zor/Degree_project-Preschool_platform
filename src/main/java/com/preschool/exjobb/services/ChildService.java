@@ -55,10 +55,13 @@ public class ChildService {
    * @return - Child id
    */
   public Long saveChildToCaregiver(long caregiversId, long childId) {
-    Child child = childRepository.findById(childId).get();
+    Optional<Child> child = childRepository.findById(childId);
+    if (child.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No child found");
+    }
     Caregiver caregiver = findCaregiver(caregiversId);
-    child.addCaregiver(caregiver);
-    Child saved = childRepository.save(child);
+    child.get().addCaregiver(caregiver);
+    Child saved = childRepository.save(child.get());
     return saved.getId();
   }
 
@@ -70,7 +73,10 @@ public class ChildService {
    */
   private Caregiver findCaregiver(long caregiversId) {
     Optional<Caregiver> foundCaregiver = caregiverRepository.findById(caregiversId);
-    return foundCaregiver.orElse(null);
+    if (foundCaregiver.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No caregiver found");
+    }
+    return foundCaregiver.get();
   }
 
   /**
@@ -80,8 +86,11 @@ public class ChildService {
    * @return - ChildResource
    */
   public ChildResource findChildById(long id) {
-    Child child = childRepository.findById(id).orElse(null);
-    return childMapper.toResource(child);
+    Optional<Child> child = childRepository.findById(id);
+    if (child.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No child found");
+    }
+    return childMapper.toResource(child.get());
   }
 
   /**
@@ -91,9 +100,15 @@ public class ChildService {
    * @return - list of ChildResources
    */
   public List<ChildResource> findAllChildrenInGroup(long groupId) {
-    PreschoolGroup preschoolGroup = preschoolGroupRepository.findById(groupId).orElse(null);
-    List<Child> childrenInGroup = childRepository.findAllByPreschoolGroup(preschoolGroup);
-    return childrenInGroup.stream().map(childMapper::toResource).collect(Collectors.toList());
+    Optional<PreschoolGroup> preschoolGroup = preschoolGroupRepository.findById(groupId);
+    if (preschoolGroup.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No preschool group found");
+    }
+    List<Child> childrenInGroup = childRepository.findAllByPreschoolGroup(preschoolGroup.get());
+    return childrenInGroup.stream()
+            .map(childMapper::toResource)
+            .collect(Collectors.toList());
+
   }
 
   /**
@@ -103,7 +118,9 @@ public class ChildService {
    */
   public List<ChildResource> findAllChildren() {
     List<Child> allChildren = childRepository.findAll();
-    return allChildren.stream().map(childMapper::toResource).collect(Collectors.toList());
+    return allChildren.stream()
+            .map(childMapper::toResource)
+            .collect(Collectors.toList());
   }
 
   /**
@@ -114,7 +131,12 @@ public class ChildService {
    */
   public List<ChildResource> findAllChildrenByCaregiver(long caregiverId) {
     List<Child> byCaregiver = childRepository.findByCaregiver(caregiverId);
-    return byCaregiver.stream().map(childMapper::toResource).collect(Collectors.toList());
+    if (byCaregiver.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No children found");
+    }
+    return byCaregiver.stream()
+            .map(childMapper::toResource)
+            .collect(Collectors.toList());
   }
 
   /**
@@ -125,19 +147,25 @@ public class ChildService {
    * @return - Child id, long
    */
   public Long upsertCaringTime(long childId, CaringTimeResource newCaringTime) {
-    Child child = childRepository.findById(childId).get();
-    List<CaringTime> presentCaringTimes = child.getCaringTimes();
+    Optional<Child> child = childRepository.findById(childId);
+    if (child.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No child found");
+    }
+    List<CaringTime> presentCaringTimes = child.get().getCaringTimes();
+
     Optional<CaringTime> found = presentCaringTimes.stream()
             .filter(caringTime -> caringTime.getWeekday()
                     .equals(converter.toWeekday(newCaringTime.getWeekday())))
             .findFirst();
     if (found.isPresent()) {
       updateFound(found, newCaringTime);
+      return found.get().getId();
     } else {
-      child.getCaringTimes().add(caringTimeMapper.toCaringTime(newCaringTime));
-      childRepository.save(child);
+      CaringTime caringTimeToSave = caringTimeMapper.toCaringTime(newCaringTime);
+      child.get().getCaringTimes().add(caringTimeToSave);
+      childRepository.save(child.get());
+      return caringTimeToSave.getId();
     }
-    return childId;
   }
 
   /**
